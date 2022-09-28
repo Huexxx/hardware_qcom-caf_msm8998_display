@@ -164,6 +164,23 @@ Error encodeVideoHistogramMetadata(VideoHistogramMetadata &in, hidl_vec<uint8_t>
   return Error::NONE;
 }
 
+Error decodeVideoTranscodeStatsMetadata(hidl_vec<uint8_t> &in, VideoTranscodeStatsMetadata *out) {
+  if (!in.size() || !out) {
+    return Error::BAD_VALUE;
+  }
+  memcpy(out, in.data(), sizeof(VideoTranscodeStatsMetadata));
+  return Error::NONE;
+}
+
+Error encodeVideoTranscodeStatsMetadata(VideoTranscodeStatsMetadata &in, hidl_vec<uint8_t> *out) {
+  if (!out) {
+    return Error::BAD_VALUE;
+  }
+  out->resize(sizeof(VideoTranscodeStatsMetadata));
+  memcpy(out->data(), &in, sizeof(VideoTranscodeStatsMetadata));
+  return Error::NONE;
+}
+
 Error decodeVideoTimestampInfo(hidl_vec<uint8_t> &in, VideoTimestampInfo *out) {
   if (!in.size() || !out) {
     return Error::BAD_VALUE;
@@ -225,6 +242,8 @@ MetadataType getMetadataType(uint32_t in) {
       return MetadataType_CVPMetadata;
     case QTI_VIDEO_HISTOGRAM_STATS:
       return MetadataType_VideoHistogramStats;
+    case QTI_VIDEO_TRANSCODE_STATS:
+      return MetadataType_VideoTranscodeStats;
     case QTI_VIDEO_TS_INFO:
       return MetadataType_VideoTimestampInfo;
     case QTI_FD:
@@ -321,6 +340,10 @@ Error get(void *buffer, uint32_t type, void *param) {
       break;
     case QTI_VIDEO_HISTOGRAM_STATS:
       err = decodeVideoHistogramMetadata(bytestream, (VideoHistogramMetadata *)param);
+      break;
+    case QTI_VIDEO_TRANSCODE_STATS:
+      err = decodeVideoTranscodeStatsMetadata(bytestream,
+                                   reinterpret_cast<VideoTranscodeStatsMetadata *>(param));
       break;
     case QTI_VIDEO_TS_INFO:
       err = decodeVideoTimestampInfo(bytestream, (VideoTimestampInfo *)param);
@@ -433,6 +456,10 @@ Error set(void *buffer, uint32_t type, void *param) {
       break;
     case QTI_VIDEO_HISTOGRAM_STATS:
       err = encodeVideoHistogramMetadata(*(VideoHistogramMetadata *)param, &bytestream);
+      break;
+    case QTI_VIDEO_TRANSCODE_STATS:
+      err = encodeVideoTranscodeStatsMetadata(
+            *reinterpret_cast<VideoTranscodeStatsMetadata *>(param), &bytestream);
       break;
     case QTI_VIDEO_TS_INFO:
       err = encodeVideoTimestampInfo(*(VideoTimestampInfo *)param, &bytestream);
