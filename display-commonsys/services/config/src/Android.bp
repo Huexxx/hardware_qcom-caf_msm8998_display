@@ -1,6 +1,5 @@
 cc_library_shared {
-    name: "libdisplayconfig.qti",
-    vendor_available: true,
+    name: "libdisplayconfig.system.qti",
     system_ext_specific: true,
     cflags: [
         "-Wno-sign-conversion",
@@ -21,9 +20,5 @@ cc_library_shared {
         "device_interface.cpp",
     ],
     export_header_lib_headers: ["display_intf_headers"],
-    export_include_dirs: ["."],
-    header_abi_checker: {
-        enabled: true,
-    },
 }
 
