@@ -76,9 +76,9 @@
 
 #include "QtiGrallocMetadata.h"
 
-/*#ifndef __QTI_DISPLAY_GRALLOC__
-#pragma message "QtiGrallocPriv.h should not be included"
-#endif*/
+#ifndef __QTI_DISPLAY_GRALLOC__
+//#pragma message "QtiGrallocPriv.h should not be included"
+#endif
 
 /*
  *
@@ -168,9 +168,7 @@ struct private_handle_t : public native_handle_t {
   uint64_t base;
   uint64_t base_metadata;
   uint64_t gpuaddr;
-#ifdef GRALLOC_HANDLE_HAS_RESERVED_SIZE
   unsigned int reserved_size;
-#endif
   static const int kNumFds = 2;
   static const int kMagic = 'gmsm';
 
@@ -198,11 +196,8 @@ struct private_handle_t : public native_handle_t {
         offset_metadata(0),
         base(0),
         base_metadata(0),
-        gpuaddr(0)
-#ifdef GRALLOC_HANDLE_HAS_RESERVED_SIZE
-        ,reserved_size(0)
-#endif
-  {
+        gpuaddr(0),
+        reserved_size(0) {
     version = static_cast<int>(sizeof(native_handle));
     numInts = NumInts();
     numFds = kNumFds;
@@ -236,18 +231,10 @@ struct private_handle_t : public native_handle_t {
   static void Dump(const private_handle_t *hnd) {
     ALOGD("handle id:%" PRIu64
           " wxh:%dx%d uwxuh:%dx%d size: %d fd:%d fd_meta:%d flags:0x%x "
-#ifdef GRALLOC_HANDLE_HAS_RESERVED_SIZE
           "usage:0x%" PRIx64 "  format:0x%x layer_count: %d reserved_size = %d",
-#else
-          "usage:0x%" PRIx64 "  format:0x%x layer_count: %d",
-#endif
           hnd->id, hnd->width, hnd->height, hnd->unaligned_width, hnd->unaligned_height, hnd->size,
-#ifdef GRALLOC_HANDLE_HAS_RESERVED_SIZE
           hnd->fd, hnd->fd_metadata, hnd->flags, hnd->usage, hnd->format, hnd->layer_count,
           hnd->reserved_size);
-#else
-          hnd->fd, hnd->fd_metadata, hnd->flags, hnd->usage, hnd->format, hnd->layer_count);
-#endif
   }
 };
 #pragma pack(pop)

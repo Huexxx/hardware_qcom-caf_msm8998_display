@@ -41,9 +41,9 @@
 #include <QtiGrallocPriv.h>
 #endif
 
-/*#ifndef __QTI_DISPLAY_GRALLOC__
-#pragma message "qdMetaData.h is being deprecated"
-#endif*/
+#ifndef __QTI_DISPLAY_GRALLOC__
+//#pragma message "qdMetaData.h is being deprecated"
+#endif
 
 #ifdef __cplusplus
 extern "C" {

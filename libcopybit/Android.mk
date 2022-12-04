@@ -14,6 +14,7 @@
 
 LOCAL_PATH:= $(call my-dir)
 include $(LOCAL_PATH)/../common.mk
+include $(CLEAR_VARS)
 
 include $(CLEAR_VARS)
 ifneq ($(TARGET_USES_GRALLOC1), true)

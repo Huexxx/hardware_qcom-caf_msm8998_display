@@ -68,8 +68,6 @@ ifeq ($(TARGET_USES_GRALLOC1), true)
     common_flags += -DUSE_GRALLOC1
 endif
 
-common_includes := system/core/base/include
-
 #Common libraries external to display HAL
 common_libs := liblog libutils libcutils libhardware
 common_deps  :=
